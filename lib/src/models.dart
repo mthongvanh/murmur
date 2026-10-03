@@ -82,6 +82,7 @@ class MurmurStyle {
   /// Creates a style. The defaults suit a dark background.
   const MurmurStyle({
     this.color = const Color(0xFFA4F5CE),
+    this.secondaryColor,
     this.scale = 1,
     this.sensitivity = 1.5,
     this.smoothing = 0.7,
@@ -96,6 +97,14 @@ class MurmurStyle {
 
   /// The color every indicator is drawn in.
   final Color color;
+
+  /// A second color some shapes mix in. Null draws everything in [color], as
+  /// before.
+  ///
+  /// [MurmurShape.particleCloud] draws about a third of its particles in it,
+  /// and [MurmurShape.radialSpokes] draws the part of each spoke that sound
+  /// pushes past its resting length in it. Other shapes ignore it.
+  final Color? secondaryColor;
 
   /// Multiplies the indicator's drawn size. Must be above zero.
   final double scale;
@@ -121,8 +130,12 @@ class MurmurStyle {
   final double rest;
 
   /// A copy of this style with the given settings replaced.
+  ///
+  /// A null argument keeps the current value, so this can't clear
+  /// [secondaryColor]: build a new [MurmurStyle] for that.
   MurmurStyle copyWith({
     Color? color,
+    Color? secondaryColor,
     double? scale,
     double? sensitivity,
     double? smoothing,
@@ -131,6 +144,7 @@ class MurmurStyle {
     double? rest,
   }) => MurmurStyle(
     color: color ?? this.color,
+    secondaryColor: secondaryColor ?? this.secondaryColor,
     scale: scale ?? this.scale,
     sensitivity: sensitivity ?? this.sensitivity,
     smoothing: smoothing ?? this.smoothing,

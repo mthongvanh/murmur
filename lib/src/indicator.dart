@@ -106,7 +106,7 @@ class _MurmurPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
     final settings = style ?? controller.style;
-    final color = settings.color;
+    final color = settings.color, secondary = settings.secondaryColor;
     final t = reduceMotion ? 0.0 : controller.time;
     // A state's look is blended in, not switched to: the controller eases
     // each state's weight, so a change of state never jumps a frame.
@@ -133,8 +133,10 @@ class _MurmurPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
-    void opacity(double a) {
-      paint.color = color.withValues(alpha: a.clamp(0.0, 1.0).toDouble());
+    void opacity(double a, [Color? tint]) {
+      paint.color = (tint ?? color).withValues(
+        alpha: a.clamp(0.0, 1.0).toDouble(),
+      );
     }
 
     void fillCircle(Offset p, double radius) {
@@ -283,7 +285,11 @@ class _MurmurPainter extends CustomPainter {
         for (var i = 0; i < count; i++) {
           final a = i * 2.39996 + t * 0.13;
           final rad = r * math.sqrt((i + 0.5) / count) * (0.6 + amp * 0.55);
-          opacity(0.25 + 0.65 * (0.5 + 0.5 * math.sin(i + t)));
+          // Fixed by index, so a particle never changes color.
+          opacity(
+            0.25 + 0.65 * (0.5 + 0.5 * math.sin(i + t)),
+            i % 3 == 2 ? secondary : null,
+          );
           fillCircle(
             center +
                 Offset(
@@ -326,16 +332,33 @@ class _MurmurPainter extends CustomPainter {
         }
       case MurmurShape.radialSpokes:
         final count = thumbnail ? 12 : 24;
+        // The length a spoke has at silence, where amp and band sit at rest.
+        final resting = r * (0.23 + settings.rest * 0.95);
         paint.strokeWidth = thumbnail ? 2 : 4;
         for (var i = 0; i < count; i++) {
           final a = i / count * tau + t * 0.12, band = frequency(i / count);
           final length = r * (0.23 + amp * 0.3 + 0.65 * band);
           opacity(0.45 + 0.5 * band);
-          canvas.drawLine(
-            polar(r * 0.18, a),
-            polar(r * 0.18 + length, a),
-            paint,
-          );
+          if (secondary == null || length <= resting) {
+            canvas.drawLine(
+              polar(r * 0.18, a),
+              polar(r * 0.18 + length, a),
+              paint,
+            );
+          } else {
+            // Sound lights up the reach past the resting length.
+            canvas.drawLine(
+              polar(r * 0.18, a),
+              polar(r * 0.18 + resting, a),
+              paint,
+            );
+            opacity(0.45 + 0.5 * band, secondary);
+            canvas.drawLine(
+              polar(r * 0.18 + resting, a),
+              polar(r * 0.18 + length, a),
+              paint,
+            );
+          }
         }
       case MurmurShape.orbitTrails:
         for (var j = 0; j < 3; j++) {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0
+
+- Added `MurmurStyle.secondaryColor`, an optional second color. Particle cloud
+  draws about a third of its particles in it, and Radial spokes draws the part
+  of each spoke past its resting length in it, so loud bands light up in it.
+  Other shapes ignore it, and a null `secondaryColor` draws as before.
+- Added a second color control to Murmur Studio.
+
 ## 0.4.0
 
 First release on pub.dev.

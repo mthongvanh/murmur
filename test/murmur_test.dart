@@ -3,6 +3,51 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:murmur/murmur.dart';
 import '../tool/check_audio.dart' as audio_checks;
 
+/// Records each circle and line with the paint's color at the time of the
+/// call, since the painter reuses one [Paint] and changes it as it goes.
+class _ColorCanvas extends TestRecordingCanvas {
+  final circles = <({Offset center, Color color})>[];
+  final lines = <({Offset from, Offset to, Color color})>[];
+  @override
+  void drawCircle(Offset c, double radius, Paint paint) {
+    if (paint.shader == null) circles.add((center: c, color: paint.color));
+  }
+
+  @override
+  void drawLine(Offset p1, Offset p2, Paint paint) =>
+      lines.add((from: p1, to: p2, color: paint.color));
+}
+
+/// Paints [shape] once, after a fixed sound, and returns what it drew.
+Future<_ColorCanvas> _record(
+  WidgetTester tester,
+  MurmurShape shape,
+  MurmurStyle style,
+) async {
+  final c = MurmurController(vsync: const TestVSync(), style: style);
+  c.useExternalAudio();
+  await tester.pumpWidget(
+    MaterialApp(
+      home: Murmur(controller: c, shape: shape),
+    ),
+  );
+  c.addFrame(AudioFrame(volume: 0.4, bands: List.generate(24, (i) => i / 23)));
+  await tester.pump(const Duration(milliseconds: 16));
+  final painter = tester
+      .widget<CustomPaint>(
+        find.descendant(
+          of: find.byType(Murmur),
+          matching: find.byType(CustomPaint),
+        ),
+      )
+      .painter!;
+  final canvas = _ColorCanvas();
+  painter.paint(canvas, const Size(320, 240));
+  await tester.pumpWidget(const SizedBox());
+  c.dispose();
+  return canvas;
+}
+
 void main() {
   test(
     'PCM analysis has known RMS and frequency output across chunk boundaries',
@@ -208,4 +253,69 @@ void main() {
       semantics.dispose();
     },
   );
+
+  test('A second color survives copyWith', () {
+    const sun = Color(0xFFFFD400);
+    final style = const MurmurStyle().copyWith(secondaryColor: sun);
+    expect(style.secondaryColor, sun);
+    expect(style.copyWith(scale: 1.2).secondaryColor, sun);
+    expect(style.copyWith(color: Colors.white).secondaryColor, sun);
+    expect(const MurmurStyle().secondaryColor, isNull);
+  });
+  group('A second color', () {
+    const coral = Color(0xFFFF7A59), butter = Color(0xFFFFD66B);
+    const plain = MurmurStyle(color: coral, smoothing: 0);
+    const mixed = MurmurStyle(
+      color: coral,
+      secondaryColor: butter,
+      smoothing: 0,
+    );
+    bool isColor(Color painted, Color expected) =>
+        painted.toARGB32() & 0xFFFFFF == expected.toARGB32() & 0xFFFFFF;
+
+    testWidgets('is left out of a particle cloud when null', (tester) async {
+      final none = await _record(tester, MurmurShape.particleCloud, plain);
+      expect(none.circles, hasLength(180));
+      expect(none.circles.every((p) => isColor(p.color, coral)), isTrue);
+    });
+    testWidgets('colors a third of the particles, keeping their places', (
+      tester,
+    ) async {
+      final none = await _record(tester, MurmurShape.particleCloud, plain);
+      final some = await _record(tester, MurmurShape.particleCloud, mixed);
+      expect(
+        some.circles.map((p) => p.center),
+        none.circles.map((p) => p.center),
+      );
+      for (var i = 0; i < some.circles.length; i++) {
+        expect(
+          isColor(some.circles[i].color, i % 3 == 2 ? butter : coral),
+          isTrue,
+          reason: 'particle $i',
+        );
+        expect(some.circles[i].color.a, none.circles[i].color.a);
+      }
+    });
+    testWidgets('is left out of radial spokes when null', (tester) async {
+      final none = await _record(tester, MurmurShape.radialSpokes, plain);
+      expect(none.lines, hasLength(24));
+      expect(none.lines.every((l) => isColor(l.color, coral)), isTrue);
+    });
+    testWidgets('lights up the reach of radial spokes past their rest', (
+      tester,
+    ) async {
+      final none = await _record(tester, MurmurShape.radialSpokes, plain);
+      final some = await _record(tester, MurmurShape.radialSpokes, mixed);
+      expect(some.lines, hasLength(48));
+      for (var i = 0; i < 24; i++) {
+        final whole = none.lines[i];
+        final base = some.lines[i * 2], reach = some.lines[i * 2 + 1];
+        expect(isColor(base.color, coral), isTrue);
+        expect(isColor(reach.color, butter), isTrue);
+        expect(base.from, whole.from);
+        expect(base.to, reach.from);
+        expect(reach.to, whole.to);
+      }
+    });
+  });
 }
