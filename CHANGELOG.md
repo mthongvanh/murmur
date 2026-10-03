@@ -1,9 +1,16 @@
 # Changelog
 
-## 0.3.1
+## 0.4.0
 
-First release on pub.dev. No changes to how the package behaves.
+First release on pub.dev.
 
+- **Breaking:** renamed the public classes to use the Murmur name:
+  - `VoiceIndicator` is now `Murmur`.
+  - `LoadingIndicator` is now `MurmurLoading`.
+  - `VoiceController` is now `MurmurController`.
+  - `VoiceStyle` is now `MurmurStyle`.
+  - `VoiceShape` is now `MurmurShape`.
+- **Breaking:** removed `VoiceShape.auroraDrop`; use `MurmurShape.waterSurface`.
 - Documented the whole public API.
 - Added install instructions, and a GIF gallery of every indicator, to the
   README. `tool/render_gifs.dart` regenerates the gallery

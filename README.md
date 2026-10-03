@@ -184,7 +184,7 @@ Use the same colors, sensitivity, smoothing, and scale controls for all of them.
 
 ## Determinate loading widget
 
-The reusable `LoadingIndicator` takes **normalized progress from 0.0 to 1.0**.
+The reusable `MurmurLoading` takes **normalized progress from 0.0 to 1.0**.
 It has no audio dependency, ticker, timer, or animation controller. Updating
 `progress` updates the exact visible state. Give it your real task progress,
 such as completed bytes divided by total bytes, and rebuild when that changes.
@@ -192,17 +192,17 @@ such as completed bytes divided by total bytes, and rebuild when that changes.
 ```dart
 import 'package:murmur/murmur.dart';
 
-LoadingIndicator(
+MurmurLoading(
   progress: 0.42,
-  shape: VoiceShape.contourBloom,
-  style: const VoiceStyle(color: Color(0xFFA4F5CE), glow: true),
+  shape: MurmurShape.contourBloom,
+  style: const MurmurStyle(color: Color(0xFFA4F5CE), glow: true),
   size: const Size(320, 240),
 )
 ```
 
 Import `package:flutter/material.dart` for `Color` and `Size`. Supported shapes
-are `VoiceShape.waterSurface`, `VoiceShape.spectrumHalo`, and
-`VoiceShape.contourBloom`, also listed in `LoadingIndicator.supportedShapes`.
+are `MurmurShape.waterSurface`, `MurmurShape.spectrumHalo`, and
+`MurmurShape.contourBloom`, also listed in `MurmurLoading.supportedShapes`.
 
 - **Water surface:** the illuminated area expands from center to a fixed rim.
 - **Spectrum halo:** bars and an inner arc fill clockwise from the top.
@@ -229,21 +229,21 @@ class AgentView extends StatefulWidget {
 
 class _AgentViewState extends State<AgentView>
     with SingleTickerProviderStateMixin {
-  late final VoiceController voice;
+  late final MurmurController voice;
 
   @override
   void initState() {
     super.initState();
-    voice = VoiceController(vsync: this);
+    voice = MurmurController(vsync: this);
     // Starts in demo mode. See the external-audio example below.
   }
 
   @override
   Widget build(BuildContext context) => ColoredBox(
     color: const Color(0xFF171B1B),
-    child: VoiceIndicator(
+    child: Murmur(
       controller: voice,
-      shape: VoiceShape.spectrumHalo,
+      shape: MurmurShape.spectrumHalo,
       size: const Size(320, 240),
     ),
   );
@@ -268,7 +268,7 @@ voice.style = voice.style.copyWith(
 );
 ```
 
-Use `VoiceIndicator.style` for a per-widget appearance override, and
+Use `Murmur.style` for a per-widget appearance override, and
 `thumbnail: true` for inexpensive gallery previews. Share one controller among
 multiple indicators; each painter listens to the controller without rebuilding
 or laying out the surrounding UI on every animation tick. The input meter has

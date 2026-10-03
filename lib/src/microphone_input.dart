@@ -5,13 +5,13 @@ import 'audio_analysis.dart';
 import 'controller.dart';
 
 /// Optional microphone adapter. Capture is mono PCM16 at 16 kHz.
-/// Existing voice agents can feed VoiceController directly instead.
+/// Existing voice agents can feed MurmurController directly instead.
 class MicrophoneInput {
   /// Creates an input that feeds [controller]. Call [start] to capture.
   MicrophoneInput(this.controller);
 
   /// Receives the analysed audio.
-  final VoiceController controller;
+  final MurmurController controller;
   final AudioRecorder _recorder = AudioRecorder();
   final Pcm16Analyzer _analyzer = Pcm16Analyzer();
   // Cancelled in stop() via a local copy, which the lint cannot follow.

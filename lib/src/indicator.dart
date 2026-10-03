@@ -5,25 +5,25 @@ import 'models.dart';
 
 /// Native Canvas indicator. Share one controller across previews to avoid
 /// independent clocks; dispose that controller in the owning screen.
-class VoiceIndicator extends StatefulWidget {
+class Murmur extends StatefulWidget {
   /// Creates an indicator that draws [controller]'s signal as [shape].
-  const VoiceIndicator({
+  const Murmur({
     super.key,
     required this.controller,
-    this.shape = VoiceShape.auroraOrb,
+    this.shape = MurmurShape.auroraOrb,
     this.style,
     this.size = const Size(320, 240),
     this.thumbnail = false,
   });
 
   /// Supplies the clock, the signal, and the agent state.
-  final VoiceController controller;
+  final MurmurController controller;
 
   /// Which design to draw.
-  final VoiceShape shape;
+  final MurmurShape shape;
 
-  /// Overrides the controller's [VoiceController.style] for this indicator.
-  final VoiceStyle? style;
+  /// Overrides the controller's [MurmurController.style] for this indicator.
+  final MurmurStyle? style;
 
   /// The size to paint at.
   final Size size;
@@ -32,10 +32,10 @@ class VoiceIndicator extends StatefulWidget {
   final bool thumbnail;
 
   @override
-  State<VoiceIndicator> createState() => _VoiceIndicatorState();
+  State<Murmur> createState() => _MurmurState();
 }
 
-class _VoiceIndicatorState extends State<VoiceIndicator> {
+class _MurmurState extends State<Murmur> {
   late AgentState _state;
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _VoiceIndicatorState extends State<VoiceIndicator> {
   }
 
   @override
-  void didUpdateWidget(VoiceIndicator oldWidget) {
+  void didUpdateWidget(Murmur oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.controller != widget.controller) {
       oldWidget.controller.removeListener(_updateSemantics);
@@ -77,7 +77,7 @@ class _VoiceIndicatorState extends State<VoiceIndicator> {
     child: RepaintBoundary(
       child: CustomPaint(
         size: widget.size,
-        painter: _VoicePainter(
+        painter: _MurmurPainter(
           controller: widget.controller,
           shape: widget.shape,
           style: widget.style,
@@ -89,17 +89,17 @@ class _VoiceIndicatorState extends State<VoiceIndicator> {
   );
 }
 
-class _VoicePainter extends CustomPainter {
-  _VoicePainter({
+class _MurmurPainter extends CustomPainter {
+  _MurmurPainter({
     required this.controller,
     required this.shape,
     required this.style,
     required this.thumbnail,
     required this.reduceMotion,
   }) : super(repaint: controller);
-  final VoiceController controller;
-  final VoiceShape shape;
-  final VoiceStyle? style;
+  final MurmurController controller;
+  final MurmurShape shape;
+  final MurmurStyle? style;
   final bool thumbnail, reduceMotion;
   static const tau = math.pi * 2;
   @override
@@ -168,7 +168,7 @@ class _VoicePainter extends CustomPainter {
       canvas.drawCircle(center, r * 1.7, glow);
     }
     switch (shape) {
-      case VoiceShape.auroraOrb:
+      case MurmurShape.auroraOrb:
         final rr = r * (0.78 + amp * 0.23);
         // The highlight is a focal point up and to the left, while the fade
         // ends on the disc's own edge, so the glow has no rim on any side.
@@ -214,7 +214,7 @@ class _VoicePainter extends CustomPainter {
           }
           canvas.drawPath(path, paint);
         }
-      case VoiceShape.frequencyBars:
+      case MurmurShape.frequencyBars:
         final n = thumbnail ? 11 : 25, width = r * 2.1 / (thumbnail ? 11 : 25);
         for (var i = 0; i < n; i++) {
           final edge = math.sin((i + 0.5) / n * math.pi);
@@ -232,7 +232,7 @@ class _VoicePainter extends CustomPainter {
             ),
           );
         }
-      case VoiceShape.rippleRings:
+      case MurmurShape.rippleRings:
         for (var j = 0; j < 5; j++) {
           final phase = (t * 0.22 + j / 5) % 1;
           opacity((1 - phase) * 0.85);
@@ -245,9 +245,9 @@ class _VoicePainter extends CustomPainter {
         }
         opacity(1);
         fillCircle(center, r * (0.09 + amp * 0.04));
-      case VoiceShape.waveform:
-      case VoiceShape.voiceRibbon:
-        final ribbon = shape == VoiceShape.voiceRibbon;
+      case MurmurShape.waveform:
+      case MurmurShape.voiceRibbon:
+        final ribbon = shape == MurmurShape.voiceRibbon;
         final width = r * (thumbnail ? 3.0 : 4.1);
         final samples = controller.waveform;
         for (var j = 0; j < (ribbon ? 5 : 3); j++) {
@@ -278,7 +278,7 @@ class _VoicePainter extends CustomPainter {
           }
           canvas.drawPath(path, paint);
         }
-      case VoiceShape.particleCloud:
+      case MurmurShape.particleCloud:
         final count = thumbnail ? 70 : 180;
         for (var i = 0; i < count; i++) {
           final a = i * 2.39996 + t * 0.13;
@@ -293,7 +293,7 @@ class _VoicePainter extends CustomPainter {
             thumbnail ? 1 : 1 + amp * 1.8,
           );
         }
-      case VoiceShape.spectrumHalo:
+      case MurmurShape.spectrumHalo:
         final count = thumbnail ? 36 : 72;
         for (var i = 0; i < count; i++) {
           final a = i / count * tau - math.pi / 2, band = frequency(i / count);
@@ -306,7 +306,7 @@ class _VoicePainter extends CustomPainter {
         opacity(0.25);
         paint.strokeWidth = 1;
         canvas.drawCircle(center, r * 0.52, paint);
-      case VoiceShape.dotMatrix:
+      case MurmurShape.dotMatrix:
         final columns = thumbnail ? 11 : 17,
             spacing = r * 2.7 / (thumbnail ? 11 : 17);
         for (var x = 0; x < columns; x++) {
@@ -324,7 +324,7 @@ class _VoicePainter extends CustomPainter {
             );
           }
         }
-      case VoiceShape.radialSpokes:
+      case MurmurShape.radialSpokes:
         final count = thumbnail ? 12 : 24;
         paint.strokeWidth = thumbnail ? 2 : 4;
         for (var i = 0; i < count; i++) {
@@ -337,7 +337,7 @@ class _VoicePainter extends CustomPainter {
             paint,
           );
         }
-      case VoiceShape.orbitTrails:
+      case MurmurShape.orbitTrails:
         for (var j = 0; j < 3; j++) {
           final tilt = t * 0.18 + j * math.pi / 3;
           final rx = r * (0.85 + amp * 0.16), ry = r * (0.26 + amp * 0.25);
@@ -365,7 +365,7 @@ class _VoicePainter extends CustomPainter {
         }
         opacity(0.7);
         fillCircle(center, r * (0.05 + amp * 0.08));
-      case VoiceShape.pulseCapsule:
+      case MurmurShape.pulseCapsule:
         final width = r * (0.55 + amp * 1.6), height = r * (0.6 + amp * 0.3);
         opacity(0.14);
         capsule(
@@ -389,7 +389,7 @@ class _VoicePainter extends CustomPainter {
             ),
           );
         }
-      case VoiceShape.contourBloom:
+      case MurmurShape.contourBloom:
         final count = thumbnail ? 5 : 9;
         for (var j = 0; j < count; j++) {
           final base = r * (0.28 + j / count * 0.72);
@@ -412,7 +412,7 @@ class _VoicePainter extends CustomPainter {
           }
           canvas.drawPath(path..close(), paint);
         }
-      case VoiceShape.waterSurface:
+      case MurmurShape.waterSurface:
         final sy = center.dy + r * 0.1, rx = r * 1.65, ry = r * 0.72;
         final pulses = controller.state == AgentState.idle || reduceMotion
             ? <RipplePulse>[]
@@ -498,7 +498,7 @@ class _VoicePainter extends CustomPainter {
             paint,
           );
         }
-      case VoiceShape.foldedLight:
+      case MurmurShape.foldedLight:
         const vertices = [
           [0.0, -1.0, 0.0],
           [-0.9, 0.6, 0.65],
@@ -533,7 +533,7 @@ class _VoicePainter extends CustomPainter {
             canvas.drawLine(points[edge[0]], points[edge[1]], paint);
           }
         }
-      case VoiceShape.gravityWell:
+      case MurmurShape.gravityWell:
         final lines = thumbnail ? 9 : 17;
         for (var j = 0; j < lines; j++) {
           final base = (j - (lines - 1) / 2) / (lines / 2);
@@ -569,7 +569,7 @@ class _VoicePainter extends CustomPainter {
             thumbnail ? 1 : 1.5 + amp,
           );
         }
-      case VoiceShape.phaseWeave:
+      case MurmurShape.phaseWeave:
         for (var j = 0; j < 4; j++) {
           final phase = t * 0.25 + j * 0.19;
           opacity(0.25 + j * 0.16);
@@ -592,7 +592,7 @@ class _VoicePainter extends CustomPainter {
           }
           canvas.drawPath(path, paint);
         }
-      case VoiceShape.inkEclipse:
+      case MurmurShape.inkEclipse:
         final rr = r * (0.83 + amp * 0.12);
         final outer = Path()
           ..addOval(Rect.fromCircle(center: center, radius: rr * 1.25));
@@ -637,7 +637,7 @@ class _VoicePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_VoicePainter old) =>
+  bool shouldRepaint(_MurmurPainter old) =>
       old.controller != controller ||
       old.shape != shape ||
       old.style != style ||

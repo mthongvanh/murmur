@@ -1,6 +1,6 @@
 name: murmur
 description: Voice-reactive and determinate loading indicators for Flutter, painted in Dart with CustomPainter.
-version: 0.3.1
+version: 0.4.0
 repository: https://github.com/mthongvanh/murmur
 issue_tracker: https://github.com/mthongvanh/murmur/issues
 topics:

@@ -30,11 +30,9 @@ void main() {
       ),
     );
     try {
-      for (final shape in VoiceShape.values) {
-        final controller = VoiceController(vsync: const TestVSync());
-        await show(
-          VoiceIndicator(controller: controller, shape: shape, size: size),
-        );
+      for (final shape in MurmurShape.values) {
+        final controller = MurmurController(vsync: const TestVSync());
+        await show(Murmur(controller: controller, shape: shape, size: size));
         // Let the demo signal and smoothing settle before recording.
         for (var i = 0; i < 2 * fps; i++) {
           await tester.pump(frameTime);
@@ -46,7 +44,7 @@ void main() {
         await tester.pumpWidget(const SizedBox());
         controller.dispose();
       }
-      for (final shape in LoadingIndicator.supportedShapes) {
+      for (final shape in MurmurLoading.supportedShapes) {
         // Hold empty, fill over three seconds, then hold full.
         const hold = fps ~/ 2, fill = 3 * fps;
         final frames = await record(tester, key, temp, hold + fill + fps, (
@@ -54,7 +52,7 @@ void main() {
         ) async {
           final t = ((i - hold) / fill).clamp(0.0, 1.0);
           await show(
-            LoadingIndicator(
+            MurmurLoading(
               progress: Curves.easeInOut.transform(t),
               shape: shape,
               size: size,

@@ -5,39 +5,39 @@ import 'models.dart';
 /// Determinate progress drawn directly in Dart. [progress] is in [0, 1].
 /// Rebuild with a new value from your task, upload, or download callback.
 /// No clock, audio input, or controller is required.
-class LoadingIndicator extends StatelessWidget {
+class MurmurLoading extends StatelessWidget {
   /// Creates an indicator showing [progress], from 0 to 1, as [shape], which
   /// must be one of [supportedShapes].
-  const LoadingIndicator({
+  const MurmurLoading({
     super.key,
     required this.progress,
-    this.shape = VoiceShape.waterSurface,
-    this.style = const VoiceStyle(),
+    this.shape = MurmurShape.waterSurface,
+    this.style = const MurmurStyle(),
     this.size = const Size(320, 240),
     this.thumbnail = false,
     this.semanticLabel = 'Loading',
   }) : assert(progress >= 0 && progress <= 1),
        assert(
-         shape == VoiceShape.waterSurface ||
-             shape == VoiceShape.spectrumHalo ||
-             shape == VoiceShape.contourBloom,
+         shape == MurmurShape.waterSurface ||
+             shape == MurmurShape.spectrumHalo ||
+             shape == MurmurShape.contourBloom,
        );
 
   /// The shapes that have a loading style.
   static const supportedShapes = [
-    VoiceShape.waterSurface,
-    VoiceShape.spectrumHalo,
-    VoiceShape.contourBloom,
+    MurmurShape.waterSurface,
+    MurmurShape.spectrumHalo,
+    MurmurShape.contourBloom,
   ];
 
   /// How complete the task is, from 0 to 1.
   final double progress;
 
   /// Which loading style to draw.
-  final VoiceShape shape;
+  final MurmurShape shape;
 
   /// The color, scale, and glow. The audio settings have no effect here.
-  final VoiceStyle style;
+  final MurmurStyle style;
 
   /// The size to paint at.
   final Size size;
@@ -81,8 +81,8 @@ class _LoadingPainter extends CustomPainter {
     required this.thumbnail,
   });
   final double progress;
-  final VoiceShape shape;
-  final VoiceStyle style;
+  final MurmurShape shape;
+  final MurmurStyle style;
   final bool thumbnail;
   static const tau = math.pi * 2;
   @override
@@ -118,7 +118,7 @@ class _LoadingPainter extends CustomPainter {
 
     canvas.save();
     canvas.clipRect(Offset.zero & size);
-    if (shape == VoiceShape.spectrumHalo) {
+    if (shape == MurmurShape.spectrumHalo) {
       final n = thumbnail ? 36 : 72, inside = r * 0.67;
       for (var i = 0; i < n; i++) {
         final a = (i + 0.5) / n * tau - math.pi / 2;
@@ -143,7 +143,7 @@ class _LoadingPainter extends CustomPainter {
           paint,
         );
       }
-    } else if (shape == VoiceShape.contourBloom) {
+    } else if (shape == MurmurShape.contourBloom) {
       final n = thumbnail ? 5 : 9;
       Path contour(double base, int layer, double portion) {
         final path = Path(), total = 160 * portion;

@@ -9,7 +9,7 @@ class RipplePulse {
   /// Creates a ripple that started at [time] with the given [strength].
   const RipplePulse({required this.time, required this.strength});
 
-  /// The [VoiceController.time] at which the ripple started.
+  /// The [MurmurController.time] at which the ripple started.
   final double time;
 
   /// How strong the ripple is, 0 to 1.
@@ -18,21 +18,21 @@ class RipplePulse {
 
 /// One shared clock for the main indicator and any preview thumbnails.
 /// Feed existing agent audio with [addFrame]; no microphone plugin is required.
-class VoiceController extends ChangeNotifier {
+class MurmurController extends ChangeNotifier {
   /// Creates a controller whose clock runs on [vsync]. It starts in demo
   /// mode, in the listening state.
-  VoiceController({
+  MurmurController({
     required TickerProvider vsync,
-    this._style = const VoiceStyle(),
+    this._style = const MurmurStyle(),
   }) {
     _ticker = vsync.createTicker(_tick)..start();
   }
   late final Ticker _ticker;
-  VoiceStyle _style;
+  MurmurStyle _style;
 
   /// How the indicators are drawn, unless an indicator sets its own style.
-  VoiceStyle get style => _style;
-  set style(VoiceStyle value) {
+  MurmurStyle get style => _style;
+  set style(MurmurStyle value) {
     _style = value;
     notifyListeners();
   }
@@ -60,7 +60,7 @@ class VoiceController extends ChangeNotifier {
   /// Seconds of animation time, not counting time spent paused.
   double get time => _time;
 
-  /// The level the indicators draw, 0 to 1, after [VoiceStyle.sensitivity]
+  /// The level the indicators draw, 0 to 1, after [MurmurStyle.sensitivity]
   /// and smoothing.
   double get volume => _volume;
 
@@ -140,7 +140,7 @@ class VoiceController extends ChangeNotifier {
   /// Restores the default style and the listening state, clears motion and
   /// ripples, and returns to demo mode.
   void reset() {
-    _style = const VoiceStyle();
+    _style = const MurmurStyle();
     _state = AgentState.listening;
     _volume = 0;
     _velocity = 0;

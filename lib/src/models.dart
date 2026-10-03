@@ -16,7 +16,7 @@ enum AgentState {
 }
 
 /// The indicator designs. Each has a display [label] and a [description].
-enum VoiceShape {
+enum MurmurShape {
   /// A glowing orb of stacked lines that swells with sound.
   auroraOrb('Aurora orb', 'Organic · immersive'),
 
@@ -68,11 +68,7 @@ enum VoiceShape {
   /// A translucent crescent with a moving negative-space center.
   inkEclipse('Ink eclipse', 'Negative · atmospheric');
 
-  /// The former name of [waterSurface].
-  @Deprecated('Use waterSurface; this indicator now renders water ripples.')
-  static const VoiceShape auroraDrop = VoiceShape.waterSurface;
-
-  const VoiceShape(this.label, this.description);
+  const MurmurShape(this.label, this.description);
 
   /// The display name, such as `Aurora orb`.
   final String label;
@@ -82,9 +78,9 @@ enum VoiceShape {
 }
 
 /// Immutable rendering settings. Audio capture is independent of appearance.
-class VoiceStyle {
+class MurmurStyle {
   /// Creates a style. The defaults suit a dark background.
-  const VoiceStyle({
+  const MurmurStyle({
     this.color = const Color(0xFFA4F5CE),
     this.scale = 1,
     this.sensitivity = 1.5,
@@ -125,7 +121,7 @@ class VoiceStyle {
   final double rest;
 
   /// A copy of this style with the given settings replaced.
-  VoiceStyle copyWith({
+  MurmurStyle copyWith({
     Color? color,
     double? scale,
     double? sensitivity,
@@ -133,7 +129,7 @@ class VoiceStyle {
     bool? glow,
     double? bounce,
     double? rest,
-  }) => VoiceStyle(
+  }) => MurmurStyle(
     color: color ?? this.color,
     scale: scale ?? this.scale,
     sensitivity: sensitivity ?? this.sensitivity,

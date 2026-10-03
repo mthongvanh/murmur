@@ -44,9 +44,9 @@ class StudioScreen extends StatefulWidget {
 
 class _StudioScreenState extends State<StudioScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
-  late final VoiceController controller;
+  late final MurmurController controller;
   late final MicrophoneInput microphone;
-  VoiceShape shape = VoiceShape.contourBloom;
+  MurmurShape shape = MurmurShape.contourBloom;
   bool _loading = true;
   late final AnimationController _progressAnimation;
   double get _progress => _progressAnimation.value * 100;
@@ -56,7 +56,7 @@ class _StudioScreenState extends State<StudioScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    controller = VoiceController(vsync: this);
+    controller = MurmurController(vsync: this);
     controller.suspend();
     _progressAnimation =
         AnimationController(
@@ -174,7 +174,7 @@ class _StudioScreenState extends State<StudioScreen>
     await _demo();
     if (mounted) {
       setState(() {
-        shape = _loading ? VoiceShape.contourBloom : VoiceShape.waterSurface;
+        shape = _loading ? MurmurShape.contourBloom : MurmurShape.waterSurface;
         controller.reset();
         _progressAnimation.stop();
         _progressAnimation.value = 0.42;
@@ -183,7 +183,7 @@ class _StudioScreenState extends State<StudioScreen>
     }
   }
 
-  void _style(VoiceStyle value) => setState(() {
+  void _style(MurmurStyle value) => setState(() {
     controller.style = value;
   });
   @override
@@ -376,14 +376,14 @@ class _StudioScreenState extends State<StudioScreen>
               : 1;
           final width = (c.maxWidth - (columns - 1) * 12) / columns;
           final options = _loading
-              ? LoadingIndicator.supportedShapes
+              ? MurmurLoading.supportedShapes
               : [
-                  VoiceShape.waterSurface,
-                  VoiceShape.foldedLight,
-                  VoiceShape.gravityWell,
-                  VoiceShape.phaseWeave,
-                  VoiceShape.inkEclipse,
-                  ...VoiceShape.values.where((s) => s.index < 12),
+                  MurmurShape.waterSurface,
+                  MurmurShape.foldedLight,
+                  MurmurShape.gravityWell,
+                  MurmurShape.phaseWeave,
+                  MurmurShape.inkEclipse,
+                  ...MurmurShape.values.where((s) => s.index < 12),
                 ];
           return Wrap(
             spacing: 12,
@@ -413,7 +413,7 @@ class _StudioScreenState extends State<StudioScreen>
   );
   Widget _indicator(
     Size size, {
-    VoiceShape? selectedShape,
+    MurmurShape? selectedShape,
     bool thumbnail = false,
   }) {
     final s = selectedShape ?? shape;
@@ -425,14 +425,14 @@ class _StudioScreenState extends State<StudioScreen>
           )
         : controller.style;
     return _loading
-        ? LoadingIndicator(
+        ? MurmurLoading(
             progress: _progressAnimation.value,
             shape: s,
             style: style,
             size: size,
             thumbnail: thumbnail,
           )
-        : VoiceIndicator(
+        : Murmur(
             controller: controller,
             shape: s,
             style: style,
@@ -450,8 +450,8 @@ class _StudioScreenState extends State<StudioScreen>
       controller.suspend();
       setState(() {
         _loading = true;
-        if (!LoadingIndicator.supportedShapes.contains(shape)) {
-          shape = VoiceShape.waterSurface;
+        if (!MurmurLoading.supportedShapes.contains(shape)) {
+          shape = MurmurShape.waterSurface;
         }
       });
     } else {
@@ -638,7 +638,7 @@ class _StudioScreenState extends State<StudioScreen>
       ),
     ),
   );
-  Widget _shapeCard(VoiceShape s) {
+  Widget _shapeCard(MurmurShape s) {
     final selected = shape == s;
     return Semantics(
       selected: selected,
@@ -690,9 +690,9 @@ class _StudioScreenState extends State<StudioScreen>
                           const SizedBox(height: 4),
                           Text(
                             _loading
-                                ? (s == VoiceShape.waterSurface
+                                ? (s == MurmurShape.waterSurface
                                       ? 'Radial fill · surface'
-                                      : s == VoiceShape.spectrumHalo
+                                      : s == MurmurShape.spectrumHalo
                                       ? 'Clockwise fill · spectrum'
                                       : 'Layered fill · bloom')
                                 : s.description,

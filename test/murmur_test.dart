@@ -11,15 +11,15 @@ void main() {
   testWidgets(
     'All seventeen shapes paint in every agent state at small and large sizes',
     (tester) async {
-      final controller = VoiceController(vsync: const TestVSync());
+      final controller = MurmurController(vsync: const TestVSync());
       for (final size in [const Size(100, 70), const Size(700, 400)]) {
         for (final state in AgentState.values) {
           controller.state = state;
-          for (final shape in VoiceShape.values) {
+          for (final shape in MurmurShape.values) {
             await tester.pumpWidget(
               MaterialApp(
                 home: Center(
-                  child: VoiceIndicator(
+                  child: Murmur(
                     controller: controller,
                     shape: shape,
                     size: size,
@@ -43,9 +43,9 @@ void main() {
   testWidgets('External audio decays after interruption and demo can resume', (
     tester,
   ) async {
-    final c = VoiceController(
+    final c = MurmurController(
       vsync: const TestVSync(),
-      style: const VoiceStyle(smoothing: 0),
+      style: const MurmurStyle(smoothing: 0),
     );
     c.useExternalAudio();
     await tester.pump();
@@ -71,9 +71,9 @@ void main() {
   testWidgets('A springy style overshoots a sudden sound, then settles on it', (
     tester,
   ) async {
-    final c = VoiceController(
+    final c = MurmurController(
       vsync: const TestVSync(),
-      style: const VoiceStyle(sensitivity: 1, bounce: 0.6),
+      style: const MurmurStyle(sensitivity: 1, bounce: 0.6),
     );
     c.useExternalAudio();
     var peak = 0.0;
@@ -88,7 +88,7 @@ void main() {
     c.dispose();
   });
   testWidgets('A change of state is eased in, not switched to', (tester) async {
-    final c = VoiceController(vsync: const TestVSync());
+    final c = MurmurController(vsync: const TestVSync());
     await tester.pump(const Duration(milliseconds: 16));
     expect(c.thinkingMix, 0);
     c.state = AgentState.thinking;
@@ -107,9 +107,9 @@ void main() {
   testWidgets(
     'A springy level falls back without dropping below and stopping dead',
     (tester) async {
-      final c = VoiceController(
+      final c = MurmurController(
         vsync: const TestVSync(),
-        style: const VoiceStyle(sensitivity: 1, bounce: 0.6),
+        style: const MurmurStyle(sensitivity: 1, bounce: 0.6),
       );
       c.useExternalAudio();
       for (var i = 0; i < 60; i++) {
@@ -139,8 +139,8 @@ void main() {
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
-    final c = VoiceController(vsync: const TestVSync());
-    await tester.pumpWidget(MaterialApp(home: VoiceIndicator(controller: c)));
+    final c = MurmurController(vsync: const TestVSync());
+    await tester.pumpWidget(MaterialApp(home: Murmur(controller: c)));
     expect(find.bySemanticsLabel('Aurora orb, listening'), findsOneWidget);
     c.state = AgentState.thinking;
     await tester.pump();
@@ -152,9 +152,9 @@ void main() {
   testWidgets('Water ripples respond to audio and settle during silence', (
     tester,
   ) async {
-    final c = VoiceController(
+    final c = MurmurController(
       vsync: const TestVSync(),
-      style: const VoiceStyle(smoothing: 0),
+      style: const MurmurStyle(smoothing: 0),
     );
     c.useExternalAudio();
     await tester.pump();
@@ -177,13 +177,13 @@ void main() {
     'Three determinate shapes render exact progress without a ticker',
     (tester) async {
       final semantics = tester.ensureSemantics();
-      for (final shape in LoadingIndicator.supportedShapes) {
+      for (final shape in MurmurLoading.supportedShapes) {
         for (final progress in [0.0, 0.25, 0.5, 0.75, 1.0]) {
           for (final size in [const Size(100, 70), const Size(700, 400)]) {
             await tester.pumpWidget(
               MaterialApp(
                 home: Center(
-                  child: LoadingIndicator(
+                  child: MurmurLoading(
                     progress: progress,
                     shape: shape,
                     size: size,
