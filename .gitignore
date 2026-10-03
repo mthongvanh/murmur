@@ -1,0 +1,15 @@
+.dart_tool/
+.packages
+build/
+**/build/
+**/.dart_tool/
+**/.flutter-plugins*
+**/pubspec.lock
+example/android/
+example/ios/
+example/macos/
+example/windows/
+example/linux/
+example/web/
+example/.metadata
+.DS_Store
