@@ -128,8 +128,8 @@ class _StudioScreenState extends State<StudioScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   late final MurmurController controller;
   late final MicrophoneInput microphone;
-  MurmurShape shape = MurmurShape.contourBloom;
-  bool _loading = true;
+  MurmurShape shape = MurmurShape.waterSurface;
+  bool _loading = false;
   late final AnimationController _progressAnimation;
   double get _progress => _progressAnimation.value * 100;
   bool _busy = false;
@@ -141,7 +141,6 @@ class _StudioScreenState extends State<StudioScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     controller = MurmurController(vsync: this);
-    controller.suspend();
     _progressAnimation =
         AnimationController(
             vsync: this,

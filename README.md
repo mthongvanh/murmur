@@ -355,10 +355,10 @@ flutter run -d macos
 # or an Android/iOS device ID from flutter devices
 ```
 
-The app starts in **Loading** mode on Contour bloom. Scrub the progress slider
-from 0 to 100%, or play, pause, reset, and replay the sample loading sequence.
-Switch to **Voice agent** for the simulated voice signal. Choose **Microphone** and grant
-access to react to your voice, clapping, or music. Permission errors are shown
+The app starts in **Voice agent** mode on Water surface, driven by the
+simulated voice signal. Choose **Microphone** and grant access to react to your
+voice, clapping, or music. Switch to **Loading** to scrub the progress slider
+from 0 to 100%, or play, pause, reset, and replay the sample loading sequence. Permission errors are shown
 in the audio controls. Microphone capture stops when the app moves to the
 background; returning resumes the demo and requires a deliberate mic restart.
 
