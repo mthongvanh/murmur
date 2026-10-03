@@ -971,56 +971,15 @@ class _StudioScreenState extends State<StudioScreen>
           children: [
             const Text('Accent color', style: TextStyle(fontSize: 14)),
             Text(
-              '#${controller.style.color.toARGB32().toRadixString(16).substring(2).toUpperCase()}',
+              _hex(controller.style.color),
               style: TextStyle(color: c.muted, fontSize: 12),
             ),
           ],
         ),
         const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children:
-              [
-                    mint,
-                    const Color(0xFF92BAFF),
-                    const Color(0xFFC5A1FF),
-                    const Color(0xFFFFAB83),
-                    const Color(0xFFF6D975),
-                  ]
-                  .map(
-                    (color) => Semantics(
-                      button: true,
-                      selected: color == controller.style.color,
-                      label: 'Accent ${color.toARGB32().toRadixString(16)}',
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: () =>
-                            _style(controller.style.copyWith(color: color)),
-                        child: Container(
-                          width: 38,
-                          height: 38,
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: color == controller.style.color
-                                  ? c.accent
-                                  : Colors.transparent,
-                              width: 2,
-                            ),
-                          ),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: color,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
+        _swatches(
+          controller.style.color,
+          (color) => _style(controller.style.copyWith(color: color)),
         ),
         const SizedBox(height: 8),
         TextButton.icon(
@@ -1028,6 +987,26 @@ class _StudioScreenState extends State<StudioScreen>
           icon: const Icon(Icons.palette_outlined, size: 17),
           label: const Text('Custom color'),
         ),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Second color', style: TextStyle(fontSize: 14)),
+            Text(
+              controller.style.secondaryColor == null
+                  ? 'None'
+                  : _hex(controller.style.secondaryColor!),
+              style: TextStyle(color: c.muted, fontSize: 12),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Mixed into Particle cloud and Radial spokes.',
+          style: TextStyle(fontSize: 13, color: c.muted, height: 1.6),
+        ),
+        const SizedBox(height: 12),
+        _swatches(controller.style.secondaryColor, _secondaryColor, none: true),
         _slider(
           'Scale',
           '${(controller.style.scale * 100).round()}%',
@@ -1180,6 +1159,90 @@ class _StudioScreenState extends State<StudioScreen>
       ],
     ),
   );
+  static const _palette = [
+    mint,
+    Color(0xFF92BAFF),
+    Color(0xFFC5A1FF),
+    Color(0xFFFFAB83),
+    Color(0xFFF6D975),
+  ];
+  String _hex(Color color) =>
+      '#${color.toARGB32().toRadixString(16).substring(2).toUpperCase()}';
+
+  /// A row of color swatches. With [none] set it leads with a "none" swatch
+  /// and leaves out the accent color, which a second color shouldn't repeat.
+  Widget _swatches(
+    Color? selected,
+    ValueChanged<Color?> onSelect, {
+    bool none = false,
+  }) => Wrap(
+    spacing: 8,
+    runSpacing: 8,
+    children:
+        [
+          if (none) null,
+          for (final color in _palette)
+            if (!none || color != controller.style.color) color,
+        ].map((color) {
+          final isSelected = color == selected;
+          return Semantics(
+            button: true,
+            selected: isSelected,
+            label: color == null
+                ? 'No second color'
+                : '${none ? 'Second color' : 'Accent'} '
+                      '${color.toARGB32().toRadixString(16)}',
+            child: InkWell(
+              borderRadius: BorderRadius.circular(24),
+              onTap: () => onSelect(color),
+              child: Container(
+                width: 38,
+                height: 38,
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected ? c.accent : Colors.transparent,
+                    width: 2,
+                  ),
+                ),
+                child: color == null
+                    ? DecoratedBox(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: c.subtle),
+                        ),
+                        child: Icon(Icons.block, size: 16, color: c.muted),
+                      )
+                    : DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: color,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+              ),
+            ),
+          );
+        }).toList(),
+  );
+
+  // copyWith can't clear the second color, so build the style afresh.
+  void _secondaryColor(Color? color) {
+    final s = controller.style;
+    _style(
+      MurmurStyle(
+        color: s.color,
+        secondaryColor: color,
+        scale: s.scale,
+        sensitivity: s.sensitivity,
+        smoothing: s.smoothing,
+        glow: s.glow,
+        bounce: s.bounce,
+        rest: s.rest,
+      ),
+    );
+  }
+
   Widget _sectionTitle(String title) => Text(
     title,
     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),

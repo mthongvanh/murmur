@@ -159,7 +159,8 @@ adapter also needs the platform permissions under
 - Three determinate loading styles: Water surface, Spectrum halo, and Contour bloom.
 - Idle, listening, thinking, and speaking states in Voice agent mode.
 - Demo and microphone input, an input meter, pause, reset, and expanded preview.
-- Accent presets and custom hex colors, scale, glow, sensitivity, and smoothing.
+- Accent presets and custom hex colors, an optional second color, scale, glow,
+  sensitivity, and smoothing.
 - A responsive studio with one shared animation clock for every preview.
 - Reduced-motion awareness and semantic labels for the selected agent state.
 - Mono PCM16 analysis with RMS volume, a Hann-window radix-2 FFT, 24 logarithmic
@@ -267,6 +268,19 @@ voice.style = voice.style.copyWith(
   sensitivity: 2.0,
   smoothing: 0.8,
   glow: true,
+);
+```
+
+Give `secondaryColor` to mix a second color into the shapes that use one:
+Particle cloud draws about a third of its particles in it, and Radial spokes
+draws the part of each spoke that sound pushes past its resting length in it.
+Every other shape draws in `color` alone, and so does every shape when
+`secondaryColor` is null.
+
+```dart
+voice.style = const MurmurStyle(
+  color: Color(0xFFFFFFFF),
+  secondaryColor: Color(0xFFFFD400),
 );
 ```
 
