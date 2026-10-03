@@ -5,6 +5,8 @@ with seventeen shapes. Every indicator is drawn in Dart
 with `CustomPainter`; no WebView, JavaScript, downloaded animations, or server
 is involved. Microphone capture uses the `record` platform plugin.
 
+**[Try the studio in your browser →](https://mthongvanh.github.io/murmur/)**
+
 ## Gallery
 
 ### Voice indicators
