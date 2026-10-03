@@ -10,3 +10,10 @@ From the package root, generate the platform folders once, then run the app:
 dart tool/bootstrap.dart
 cd example && flutter run
 ```
+
+Two minimal examples sit alongside the studio:
+
+- `lib/minimal.dart`: one indicator, driven by the built-in demo signal.
+- `lib/microphone.dart`: one indicator that reacts to the microphone.
+
+Run one with `flutter run -t lib/minimal.dart` or `flutter run -t lib/microphone.dart`.

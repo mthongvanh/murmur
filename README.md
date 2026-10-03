@@ -342,6 +342,10 @@ and sets Android's minimum SDK to 23. Existing host directories are preserved.
 Platform scaffolding is generated rather than bundled so it matches your
 installed SDK and host tools.
 
+For a starting point smaller than the studio, run one of the two minimal
+examples instead: `flutter run -t lib/minimal.dart` shows one indicator on the
+demo signal, and `flutter run -t lib/microphone.dart` adds a microphone button.
+
 Use `flutter devices` to see available targets. For example:
 
 ```sh
