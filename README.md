@@ -14,97 +14,97 @@ Shown in the listening state, driven by the built-in demo signal.
 <table>
   <tr>
     <td align="center">
-      <img src="doc/gifs/aurora_orb.gif" width="240" alt="Aurora orb"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/aurora_orb.gif" width="240" alt="Aurora orb"><br>
       <b>Aurora orb</b><br>
       <sub>Organic · immersive</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/frequency_bars.gif" width="240" alt="Frequency bars"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/frequency_bars.gif" width="240" alt="Frequency bars"><br>
       <b>Frequency bars</b><br>
       <sub>Rhythmic · precise</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/ripple_rings.gif" width="240" alt="Ripple rings"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/ripple_rings.gif" width="240" alt="Ripple rings"><br>
       <b>Ripple rings</b><br>
       <sub>Calm · expansive</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="doc/gifs/waveform.gif" width="240" alt="Waveform"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/waveform.gif" width="240" alt="Waveform"><br>
       <b>Waveform</b><br>
       <sub>Familiar · expressive</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/particle_cloud.gif" width="240" alt="Particle cloud"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/particle_cloud.gif" width="240" alt="Particle cloud"><br>
       <b>Particle cloud</b><br>
       <sub>Playful · ambient</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/voice_ribbon.gif" width="240" alt="Voice ribbon"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/voice_ribbon.gif" width="240" alt="Voice ribbon"><br>
       <b>Voice ribbon</b><br>
       <sub>Fluid · continuous</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="doc/gifs/spectrum_halo.gif" width="240" alt="Spectrum halo"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/spectrum_halo.gif" width="240" alt="Spectrum halo"><br>
       <b>Spectrum halo</b><br>
       <sub>Circular · detailed</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/dot_matrix.gif" width="240" alt="Dot matrix"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/dot_matrix.gif" width="240" alt="Dot matrix"><br>
       <b>Dot matrix</b><br>
       <sub>Digital · tactile</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/radial_spokes.gif" width="240" alt="Radial spokes"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/radial_spokes.gif" width="240" alt="Radial spokes"><br>
       <b>Radial spokes</b><br>
       <sub>Bold · energetic</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="doc/gifs/orbit_trails.gif" width="240" alt="Orbit trails"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/orbit_trails.gif" width="240" alt="Orbit trails"><br>
       <b>Orbit trails</b><br>
       <sub>Spatial · flowing</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/pulse_capsule.gif" width="240" alt="Pulse capsule"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/pulse_capsule.gif" width="240" alt="Pulse capsule"><br>
       <b>Pulse capsule</b><br>
       <sub>Minimal · focused</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/contour_bloom.gif" width="240" alt="Contour bloom"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/contour_bloom.gif" width="240" alt="Contour bloom"><br>
       <b>Contour bloom</b><br>
       <sub>Layered · organic</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="doc/gifs/water_surface.gif" width="240" alt="Water surface"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/water_surface.gif" width="240" alt="Water surface"><br>
       <b>Water surface</b><br>
       <sub>Rippling · luminous</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/folded_light.gif" width="240" alt="Folded light"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/folded_light.gif" width="240" alt="Folded light"><br>
       <b>Folded light</b><br>
       <sub>Angular · prismatic</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/gravity_well.gif" width="240" alt="Gravity well"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/gravity_well.gif" width="240" alt="Gravity well"><br>
       <b>Gravity well</b><br>
       <sub>Warped · magnetic</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="doc/gifs/phase_weave.gif" width="240" alt="Phase weave"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/phase_weave.gif" width="240" alt="Phase weave"><br>
       <b>Phase weave</b><br>
       <sub>Entangled · continuous</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/ink_eclipse.gif" width="240" alt="Ink eclipse"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/ink_eclipse.gif" width="240" alt="Ink eclipse"><br>
       <b>Ink eclipse</b><br>
       <sub>Negative · atmospheric</sub>
     </td>
@@ -118,17 +118,17 @@ Progress eases from 0 to 100%.
 <table>
   <tr>
     <td align="center">
-      <img src="doc/gifs/loading_water_surface.gif" width="240" alt="Water surface"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/loading_water_surface.gif" width="240" alt="Water surface"><br>
       <b>Water surface</b><br>
       <sub>Fills from center to the rim</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/loading_spectrum_halo.gif" width="240" alt="Spectrum halo"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/loading_spectrum_halo.gif" width="240" alt="Spectrum halo"><br>
       <b>Spectrum halo</b><br>
       <sub>Fills clockwise from the top</sub>
     </td>
     <td align="center">
-      <img src="doc/gifs/loading_contour_bloom.gif" width="240" alt="Contour bloom"><br>
+      <img src="https://raw.githubusercontent.com/mthongvanh/murmur/main/doc/gifs/loading_contour_bloom.gif" width="240" alt="Contour bloom"><br>
       <b>Contour bloom</b><br>
       <sub>Fills from the innermost contour out</sub>
     </td>
@@ -138,44 +138,15 @@ Progress eases from 0 to 100%.
 To regenerate these after changing an indicator, run
 `flutter test tool/render_gifs.dart` from the package root (needs ffmpeg).
 
-## Start the studio
-
-Install **Flutter 3.44 or newer with Dart 3.12 or newer**, and put `flutter`
-and its bundled `dart` on your PATH. Have the normal toolchain for your chosen
-platform installed (Xcode for iOS/macOS, Android Studio for Android, etc.).
-
-Unzip the project, open a terminal in this folder, and run:
+## Install
 
 ```sh
-dart tool/bootstrap.dart
-cd example
-flutter run
+flutter pub add murmur
 ```
 
-The bootstrap script generates Android, iOS, macOS, Windows, Linux, and web
-host projects from your installed Flutter SDK. It preserves the authored
-Dart app and pubspec, adds microphone permissions, enables macOS audio input,
-and sets Android's minimum SDK to 23. Existing host directories are preserved.
-Platform scaffolding is generated rather than bundled so it matches your
-installed SDK and host tools. This archive contains source, not a compiled app.
-
-Use `flutter devices` to see available targets. For example:
-
-```sh
-flutter run -d macos
-# or an Android/iOS device ID from flutter devices
-```
-
-The app starts in **Loading** mode on Contour bloom. Scrub the progress slider
-from 0 to 100%, or play, pause, reset, and replay the sample loading sequence.
-Switch to **Voice agent** for the simulated voice signal. Choose **Microphone** and grant
-access to react to your voice, clapping, or music. Permission errors are shown
-in the audio controls. Microphone capture stops when the app moves to the
-background; returning resumes the demo and requires a deliberate mic restart.
-
-On Linux, the capture plugin requires `parecord`, `pactl`, and `ffmpeg`
-(typically `pulseaudio-utils` and `ffmpeg`). On web, microphone capture requires
-localhost or HTTPS. Native builds use the OS microphone capture APIs.
+Requires **Flutter 3.44 or newer with Dart 3.12 or newer**. The microphone
+adapter also needs the platform permissions under
+[Microphone permissions in an existing app](#microphone-permissions-in-an-existing-app).
 
 ## Included
 
@@ -242,15 +213,7 @@ percentage labels. Audio level and elapsed time do not determine progress.
 The studio uses a separate eight-second animation controller solely to simulate
 progress during preview; production callers supply their own real values.
 
-## Reuse the voice widget
-
-Add this package as a local dependency in your app's `pubspec.yaml`:
-
-```yaml
-dependencies:
-  murmur:
-    path: ../murmur
-```
+## Voice indicator widget
 
 Create and dispose one controller in the screen that owns the indicators:
 
@@ -358,6 +321,45 @@ when you can await cleanup.
 The example's bootstrap handles these changes for you. Audio is processed
 locally. Nothing in this package writes recordings or uploads audio.
 
+## Run the example studio
+
+Put `flutter` and its bundled `dart` on your PATH, and have the normal
+toolchain for your chosen platform installed (Xcode for iOS/macOS, Android
+Studio for Android, etc.).
+
+Clone this repository, open a terminal in its root, and run:
+
+```sh
+dart tool/bootstrap.dart
+cd example
+flutter run
+```
+
+The bootstrap script generates Android, iOS, macOS, Windows, Linux, and web
+host projects from your installed Flutter SDK. It preserves the authored
+Dart app and pubspec, adds microphone permissions, enables macOS audio input,
+and sets Android's minimum SDK to 23. Existing host directories are preserved.
+Platform scaffolding is generated rather than bundled so it matches your
+installed SDK and host tools.
+
+Use `flutter devices` to see available targets. For example:
+
+```sh
+flutter run -d macos
+# or an Android/iOS device ID from flutter devices
+```
+
+The app starts in **Loading** mode on Contour bloom. Scrub the progress slider
+from 0 to 100%, or play, pause, reset, and replay the sample loading sequence.
+Switch to **Voice agent** for the simulated voice signal. Choose **Microphone** and grant
+access to react to your voice, clapping, or music. Permission errors are shown
+in the audio controls. Microphone capture stops when the app moves to the
+background; returning resumes the demo and requires a deliberate mic restart.
+
+On Linux, the capture plugin requires `parecord`, `pactl`, and `ffmpeg`
+(typically `pulseaudio-utils` and `ffmpeg`). On web, microphone capture requires
+localhost or HTTPS. Native builds use the OS microphone capture APIs.
+
 ## Check the project
 
 From the package root:
@@ -380,16 +382,6 @@ state changes. Loading widget tests cover all three shapes at 0/25/50/75/100%,
 small and large sizes, and exact semantic percentage values. Also test microphone permission grant/deny, disconnect, background
 and resume, custom colors, and switching sources on your physical target device.
 
-### Validation in the creation environment
-
-All Dart files passed a tree-sitter syntax parse. Package declarations, local
-imports, shape coverage, and archive contents were also checked. A downloaded Dart runtime could report its
-version but crashed during VM startup in this sandbox, and a Flutter SDK could
-not be obtained here. Flutter analysis, widget tests, and native device microphone
-checks have therefore **not been run**. The provided commands and tests are ready
-to run with your local Flutter installation; the project should be validated on
-your actual deployment targets before release.
-
 ## Source map
 
 | File | Purpose |
@@ -402,6 +394,7 @@ your actual deployment targets before release.
 | `lib/src/models.dart` | Shape/state enums and immutable style settings |
 | `example/lib/main.dart` | Responsive studio and lifecycle handling |
 | `tool/bootstrap.dart` | Host scaffolding and microphone permission setup |
+| `tool/render_gifs.dart` | Renders the gallery GIFs in `doc/gifs` |
 
 API references: [Flutter CustomPainter](https://api.flutter.dev/flutter/rendering/CustomPainter-class.html),
 [record package](https://pub.dev/packages/record),

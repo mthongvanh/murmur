@@ -7,7 +7,10 @@ import 'controller.dart';
 /// Optional microphone adapter. Capture is mono PCM16 at 16 kHz.
 /// Existing voice agents can feed VoiceController directly instead.
 class MicrophoneInput {
+  /// Creates an input that feeds [controller]. Call [start] to capture.
   MicrophoneInput(this.controller);
+
+  /// Receives the analysed audio.
   final VoiceController controller;
   final AudioRecorder _recorder = AudioRecorder();
   final Pcm16Analyzer _analyzer = Pcm16Analyzer();
@@ -17,10 +20,21 @@ class MicrophoneInput {
   Future<void>? _starting;
   bool _disposed = false, _active = false;
   int _generation = 0;
+
+  /// Whether audio is being captured.
   bool get isActive => _active;
+
+  /// Called when the audio stream fails after capture started. Capture
+  /// stops. Errors from [start] itself are thrown from its future instead.
   void Function(Object error)? onError;
+
+  /// Called when the audio stream ends on its own. Capture stops.
   void Function()? onEnded;
 
+  /// Asks for microphone permission and starts capture, switching
+  /// [controller] to external audio. Throws a [StateError] if permission is
+  /// denied or the input was disposed. While starting or active, it does
+  /// nothing more.
   Future<void> start() {
     if (_disposed) {
       return Future.error(StateError('Microphone input was disposed'));
@@ -91,6 +105,7 @@ class MicrophoneInput {
     }
   }
 
+  /// Stops capture. Safe to call when not capturing.
   Future<void> stop() async {
     ++_generation;
     _active = false;
@@ -107,6 +122,7 @@ class MicrophoneInput {
     _analyzer.reset();
   }
 
+  /// Stops capture and releases the recorder. The input cannot be restarted.
   Future<void> dispose() async {
     if (_disposed) return;
     _disposed = true;

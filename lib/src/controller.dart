@@ -6,13 +6,21 @@ import 'models.dart';
 
 /// A sound-triggered ripple, shared by every view of the same controller.
 class RipplePulse {
+  /// Creates a ripple that started at [time] with the given [strength].
   const RipplePulse({required this.time, required this.strength});
-  final double time, strength;
+
+  /// The [VoiceController.time] at which the ripple started.
+  final double time;
+
+  /// How strong the ripple is, 0 to 1.
+  final double strength;
 }
 
 /// One shared clock for the main indicator and any preview thumbnails.
 /// Feed existing agent audio with [addFrame]; no microphone plugin is required.
 class VoiceController extends ChangeNotifier {
+  /// Creates a controller whose clock runs on [vsync]. It starts in demo
+  /// mode, in the listening state.
   VoiceController({
     required TickerProvider vsync,
     this._style = const VoiceStyle(),
@@ -21,6 +29,8 @@ class VoiceController extends ChangeNotifier {
   }
   late final Ticker _ticker;
   VoiceStyle _style;
+
+  /// How the indicators are drawn, unless an indicator sets its own style.
   VoiceStyle get style => _style;
   set style(VoiceStyle value) {
     _style = value;
@@ -28,6 +38,9 @@ class VoiceController extends ChangeNotifier {
   }
 
   AgentState _state = AgentState.listening;
+
+  /// The agent state the indicators show. A change eases in over about a
+  /// third of a second.
   AgentState get state => _state;
   set state(AgentState value) {
     _state = value;
@@ -35,23 +48,48 @@ class VoiceController extends ChangeNotifier {
   }
 
   bool _demo = true, _paused = false, _disposed = false;
+
+  /// Whether the built-in demo signal drives the indicators, rather than
+  /// audio passed to [addFrame].
   bool get isDemo => _demo;
+
+  /// Whether the clock and signal are paused. See [setPaused].
   bool get paused => _paused;
   double _time = 0, _volume = 0, _rawVolume = 0, _lastFeedTime = 0;
+
+  /// Seconds of animation time, not counting time spent paused.
   double get time => _time;
+
+  /// The level the indicators draw, 0 to 1, after [VoiceStyle.sensitivity]
+  /// and smoothing.
   double get volume => _volume;
+
+  /// The latest input level, 0 to 1, before sensitivity and smoothing.
   double get rawVolume => _rawVolume;
   final List<double> _bands = List.filled(24, 0);
+
+  /// The levels of 24 frequency bands, low to high, each 0 to 1, after
+  /// sensitivity and smoothing.
   List<double> get bands => List.unmodifiable(_bands);
   List<double> _targetBands = List.filled(24, 0), _waveform = const [];
+
+  /// The latest waveform samples, -1 to 1. Empty in demo mode and when no
+  /// audio has arrived recently.
   List<double> get waveform => _waveform;
   Duration? _previous;
+
+  /// [rawVolume], updated about 12 times a second, for meters that should
+  /// not rebuild on every frame.
   final ValueNotifier<double> inputLevel = ValueNotifier(0);
   double _meterTime = 0;
   final List<RipplePulse> _ripples = [];
+
+  /// Recent sound-triggered ripples, oldest first. Each lasts 3.2 seconds,
+  /// and at most 10 are kept.
   List<RipplePulse> get ripples => List.unmodifiable(_ripples);
   double _lastRippleTime = -1, _previousRippleLevel = 0;
 
+  /// Drives the indicators from the built-in demo signal, and unpauses.
   void useDemo() {
     _demo = true;
     _paused = false;
@@ -60,6 +98,9 @@ class VoiceController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Switches to audio passed to [addFrame], starting from silence, and
+  /// unpauses. If no frame arrives for a quarter of a second, the level falls
+  /// back to silence.
   void useExternalAudio() {
     _demo = false;
     _paused = false;
@@ -70,11 +111,15 @@ class VoiceController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Pauses or resumes the clock. While paused, the level falls to silence
+  /// and no ripples start.
   void setPaused(bool value) {
     _paused = value;
     notifyListeners();
   }
 
+  /// Feeds one frame of audio and leaves demo mode. The frame's bands are
+  /// mapped onto the controller's 24.
   void addFrame(AudioFrame frame) {
     if (_disposed) return;
     _demo = false;
@@ -92,6 +137,8 @@ class VoiceController extends ChangeNotifier {
     _waveform = frame.waveform;
   }
 
+  /// Restores the default style and the listening state, clears motion and
+  /// ripples, and returns to demo mode.
   void reset() {
     _style = const VoiceStyle();
     _state = AgentState.listening;
@@ -110,6 +157,7 @@ class VoiceController extends ChangeNotifier {
     _previous = null;
   }
 
+  /// Restarts the clock after [suspend].
   void resume() {
     if (!_disposed && !_ticker.isActive) {
       _previous = null;
@@ -154,9 +202,11 @@ class VoiceController extends ChangeNotifier {
     return x;
   }
 
-  /// How far each state's look is shown, 0 to 1, eased over about a third
-  /// of a second whenever the state changes.
+  /// How far the thinking look is shown, 0 to 1. It eases over about a
+  /// third of a second whenever [state] changes.
   double get thinkingMix => _thinkingMix;
+
+  /// How far the idle look is shown, 0 to 1, eased like [thinkingMix].
   double get idleMix => _idleMix;
   double _thinkingMix = 0, _idleMix = 0;
   bool _mixed = false;

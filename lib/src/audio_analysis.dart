@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 /// Normalized audio measurements, independent of the capture plugin.
 class AudioFrame {
+  /// Creates a frame. Out-of-range values are clamped to their range, and
+  /// values that are not finite become zero.
   AudioFrame({
     required double volume,
     required List<double> bands,
@@ -12,9 +14,16 @@ class AudioFrame {
        waveform = List.unmodifiable(
          waveform.map((v) => v.isFinite ? v.clamp(-1.0, 1.0).toDouble() : 0.0),
        );
+
+  /// Loudness, 0 to 1.
   final double volume;
+
+  /// Frequency band levels, low to high, each 0 to 1.
   final List<double> bands;
+
+  /// Waveform samples, -1 to 1. Can be empty.
   final List<double> waveform;
+
   static double _unit(double v) =>
       v.isFinite ? v.clamp(0.0, 1.0).toDouble() : 0;
 }
@@ -22,6 +31,10 @@ class AudioFrame {
 /// Mono signed little-endian PCM16 -> RMS, waveform, logarithmic FFT bands.
 /// Handles arbitrary stream chunk boundaries, including split 16-bit samples.
 class Pcm16Analyzer {
+  /// Creates an analyzer for audio at [sampleRate] Hz. Each frame analyses
+  /// the last [fftSize] samples, which must be a power of two, and a new frame
+  /// comes every [hopSize] samples. Throws an [ArgumentError] if a setting is
+  /// out of range.
   Pcm16Analyzer({
     this.sampleRate = 16000,
     this.fftSize = 1024,
@@ -44,11 +57,26 @@ class Pcm16Analyzer {
       ),
     );
   }
-  final int sampleRate, fftSize, hopSize, bandCount;
+
+  /// Samples per second of the incoming audio.
+  final int sampleRate;
+
+  /// Samples in each analysis window. A power of two, at least 32.
+  final int fftSize;
+
+  /// Samples between frames, from 1 to [fftSize].
+  final int hopSize;
+
+  /// How many frequency bands each frame has.
+  final int bandCount;
+
   late Float64List _ring, _window;
   int _write = 0, _count = 0, _sinceFrame = 0;
   int? _lowByte;
 
+  /// Adds PCM bytes and returns the frames they complete, which may be none.
+  /// Chunks can split anywhere, even inside a sample. The result is lazy:
+  /// iterate it, or the bytes are not consumed.
   Iterable<AudioFrame> addBytes(Uint8List bytes) sync* {
     for (final byte in bytes) {
       if (_lowByte == null) {
@@ -69,6 +97,7 @@ class Pcm16Analyzer {
     }
   }
 
+  /// Clears buffered audio, ready for a new stream.
   void reset() {
     _ring.fillRange(0, fftSize, 0);
     _write = 0;

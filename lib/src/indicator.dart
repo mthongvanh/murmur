@@ -6,6 +6,7 @@ import 'models.dart';
 /// Native Canvas indicator. Share one controller across previews to avoid
 /// independent clocks; dispose that controller in the owning screen.
 class VoiceIndicator extends StatefulWidget {
+  /// Creates an indicator that draws [controller]'s signal as [shape].
   const VoiceIndicator({
     super.key,
     required this.controller,
@@ -14,11 +15,22 @@ class VoiceIndicator extends StatefulWidget {
     this.size = const Size(320, 240),
     this.thumbnail = false,
   });
+
+  /// Supplies the clock, the signal, and the agent state.
   final VoiceController controller;
+
+  /// Which design to draw.
   final VoiceShape shape;
+
+  /// Overrides the controller's [VoiceController.style] for this indicator.
   final VoiceStyle? style;
+
+  /// The size to paint at.
   final Size size;
+
+  /// Draws a simpler version without glow, for small previews.
   final bool thumbnail;
+
   @override
   State<VoiceIndicator> createState() => _VoiceIndicatorState();
 }

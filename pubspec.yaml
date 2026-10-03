@@ -1,7 +1,21 @@
 name: murmur
-description: Murmur — native Flutter voice-reactive and determinate loading indicators, painted in Dart.
-version: 0.3.0
-publish_to: none
+description: Voice-reactive and determinate loading indicators for Flutter, painted in Dart with CustomPainter.
+version: 0.3.1
+repository: https://github.com/mthongvanh/murmur
+issue_tracker: https://github.com/mthongvanh/murmur/issues
+topics:
+  - animation
+  - audio
+  - voice
+  - loading
+  - widget
+screenshots:
+  - description: Aurora orb voice indicator reacting to sound.
+    path: doc/gifs/aurora_orb.gif
+  - description: Spectrum halo voice indicator reacting to sound.
+    path: doc/gifs/spectrum_halo.gif
+  - description: Contour bloom loading indicator filling from 0 to 100%.
+    path: doc/gifs/loading_contour_bloom.gif
 environment:
   sdk: '>=3.12.0 <4.0.0'
   flutter: '>=3.44.0'

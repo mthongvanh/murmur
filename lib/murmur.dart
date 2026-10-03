@@ -1,3 +1,8 @@
+/// Voice-reactive and determinate loading indicators, painted in Dart.
+///
+/// Drive `VoiceIndicator`s from a shared `VoiceController`, fed by its demo
+/// signal, your agent's audio through `Pcm16Analyzer`, or `MicrophoneInput`.
+/// Show task progress with `LoadingIndicator`.
 library;
 
 export 'src/audio_analysis.dart' show AudioFrame, Pcm16Analyzer;

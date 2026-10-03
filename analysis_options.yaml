@@ -37,6 +37,7 @@ linter:
     # Public API.
     - always_declare_return_types
     - comment_references
+    - public_member_api_docs
     - type_annotate_public_apis
 
     # Style.

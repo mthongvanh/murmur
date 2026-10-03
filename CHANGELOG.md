@@ -1,12 +1,14 @@
 # Changelog
 
-## Unreleased
+## 0.3.1
 
-No changes to the package API.
+First release on pub.dev. No changes to how the package behaves.
 
-- Added a GIF gallery of every indicator to the README, and
-  `tool/render_gifs.dart` to regenerate it (`flutter test tool/render_gifs.dart`,
-  needs ffmpeg).
+- Documented the whole public API.
+- Added install instructions, and a GIF gallery of every indicator, to the
+  README. `tool/render_gifs.dart` regenerates the gallery
+  (`flutter test tool/render_gifs.dart`, needs ffmpeg).
+- Added an MIT license.
 - `tool/bootstrap.dart` now generates platform folders with the bundle ID
   `com.thongvanh.michael.murmur`, replacing the `com.voicestudio` org.
   Existing platform folders are left as they are; delete them and re-run the

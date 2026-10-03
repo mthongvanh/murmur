@@ -6,6 +6,8 @@ import 'models.dart';
 /// Rebuild with a new value from your task, upload, or download callback.
 /// No clock, audio input, or controller is required.
 class LoadingIndicator extends StatelessWidget {
+  /// Creates an indicator showing [progress], from 0 to 1, as [shape], which
+  /// must be one of [supportedShapes].
   const LoadingIndicator({
     super.key,
     required this.progress,
@@ -20,16 +22,30 @@ class LoadingIndicator extends StatelessWidget {
              shape == VoiceShape.spectrumHalo ||
              shape == VoiceShape.contourBloom,
        );
+
+  /// The shapes that have a loading style.
   static const supportedShapes = [
     VoiceShape.waterSurface,
     VoiceShape.spectrumHalo,
     VoiceShape.contourBloom,
   ];
+
+  /// How complete the task is, from 0 to 1.
   final double progress;
+
+  /// Which loading style to draw.
   final VoiceShape shape;
+
+  /// The color, scale, and glow. The audio settings have no effect here.
   final VoiceStyle style;
+
+  /// The size to paint at.
   final Size size;
+
+  /// Draws a simpler version without glow, for small previews.
   final bool thumbnail;
+
+  /// What screen readers announce, followed by the percentage.
   final String semanticLabel;
 
   @override

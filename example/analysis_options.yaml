@@ -1,2 +1,7 @@
-# The example follows the package's rules.
+# The example follows the package's rules, except that an app has no public
+# API to document.
 include: ../analysis_options.yaml
+
+linter:
+  rules:
+    public_member_api_docs: false
