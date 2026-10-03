@@ -76,6 +76,23 @@ Future<void> main(List<String> args) async {
         );
       });
     }
+    const webDescription =
+        'A native Flutter playground for the seventeen Murmur indicators.';
+    patchFile(
+      '${app.path}/web/index.html',
+      (s) => s
+          .replaceAll('<title>murmur</title>', '<title>Murmur Studio</title>')
+          .replaceAll('content="murmur"', 'content="Murmur Studio"')
+          .replaceAll('A new Flutter project.', webDescription),
+    );
+    patchFile(
+      '${app.path}/web/manifest.json',
+      (s) => s
+          .replaceAll('"name": "murmur"', '"name": "Murmur Studio"')
+          .replaceAll('"short_name": "murmur"', '"short_name": "Murmur Studio"')
+          .replaceAll('A new Flutter project.', webDescription)
+          .replaceAll('#0175C2', '#171B1B'),
+    );
     await runFlutter(['pub', 'get'], root.path);
     await runFlutter(['pub', 'get'], app.path);
     stdout.writeln('\nStudio ready. Run: cd example && flutter run');

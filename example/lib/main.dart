@@ -3,41 +3,123 @@ import 'package:flutter/material.dart';
 import 'package:murmur/murmur.dart';
 
 void main() => runApp(const MurmurStudioApp());
-const ink = Color(0xFF242B27),
-    muted = Color(0xFF7C877F),
-    green = Color(0xFF527C60);
-const mint = Color(0xFFA4F5CE), stageColor = Color(0xFF171B1B);
+const mint = Color(0xFFA4F5CE),
+    stageColor = Color(0xFF171B1B),
+    logoTile = Color(0xFF242B27);
 
-class MurmurStudioApp extends StatelessWidget {
+/// Studio palette for one brightness. The stage stays dark in both themes.
+class StudioColors {
+  const StudioColors({
+    required this.ink,
+    required this.muted,
+    required this.accent,
+    required this.background,
+    required this.surface,
+    required this.well,
+    required this.panel,
+    required this.tint,
+    required this.line,
+    required this.border,
+    required this.subtle,
+    required this.thumbnail,
+    required this.meterOn,
+    required this.meterOff,
+    required this.error,
+    required this.stageBorder,
+  });
+  final Color ink, muted, accent, background, surface, well, panel, tint;
+  final Color line, border, subtle, thumbnail, meterOn, meterOff, error;
+  final Color stageBorder;
+
+  static const light = StudioColors(
+    ink: Color(0xFF242B27),
+    muted: Color(0xFF7C877F),
+    accent: Color(0xFF527C60),
+    background: Color(0xFFF7F8F7),
+    surface: Colors.white,
+    well: Color(0xFFF0F3F0),
+    panel: Color(0xFFFAFCF9),
+    tint: Color(0xFFF3F6F2),
+    line: Color(0xFFE0E6E0),
+    border: Color(0xFFDDE4DD),
+    subtle: Color(0xFFD0DAD2),
+    thumbnail: Color(0xFF4E8867),
+    meterOn: Color(0xFF83B394),
+    meterOff: Color(0xFFE1E8E0),
+    error: Color(0xFFAD553D),
+    stageBorder: Colors.transparent,
+  );
+  static const dark = StudioColors(
+    ink: Color(0xFFE4EAE6),
+    muted: Color(0xFF93A098),
+    accent: Color(0xFF86BD98),
+    background: Color(0xFF0E1110),
+    surface: Color(0xFF181C1B),
+    well: Color(0xFF111413),
+    panel: Color(0xFF131716),
+    tint: Color(0xFF1F2523),
+    line: Color(0xFF2A302E),
+    border: Color(0xFF2E3532),
+    subtle: Color(0xFF47514C),
+    thumbnail: Color(0xFF7FC59C),
+    meterOn: Color(0xFF83B394),
+    meterOff: Color(0xFF262D2A),
+    error: Color(0xFFE8907A),
+    stageBorder: Color(0xFF262D2A),
+  );
+  static StudioColors of(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark ? dark : light;
+}
+
+ThemeData studioTheme(Brightness brightness) {
+  final c = brightness == Brightness.dark
+      ? StudioColors.dark
+      : StudioColors.light;
+  return ThemeData(
+    useMaterial3: true,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: StudioColors.light.accent,
+      brightness: brightness,
+      surface: c.surface,
+    ),
+    scaffoldBackgroundColor: c.background,
+    textTheme: TextTheme(bodyMedium: TextStyle(fontSize: 16, color: c.ink)),
+    sliderTheme: const SliderThemeData(
+      trackHeight: 3,
+      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(backgroundColor: c.accent),
+    ),
+  );
+}
+
+class MurmurStudioApp extends StatefulWidget {
   const MurmurStudioApp({super.key});
+  @override
+  State<MurmurStudioApp> createState() => _MurmurStudioAppState();
+}
+
+class _MurmurStudioAppState extends State<MurmurStudioApp> {
+  ThemeMode _themeMode = ThemeMode.system;
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
     title: 'Murmur Studio',
-    theme: ThemeData(
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: green,
-        surface: Colors.white,
-      ),
-      scaffoldBackgroundColor: const Color(0xFFF7F8F7),
-      textTheme: const TextTheme(
-        bodyMedium: TextStyle(fontSize: 16, color: ink),
-      ),
-      sliderTheme: const SliderThemeData(
-        trackHeight: 3,
-        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(backgroundColor: green),
-      ),
+    theme: studioTheme(Brightness.light),
+    darkTheme: studioTheme(Brightness.dark),
+    themeMode: _themeMode,
+    home: StudioScreen(
+      onDarkModeChanged: (dark) => setState(() {
+        _themeMode = dark ? ThemeMode.dark : ThemeMode.light;
+      }),
     ),
-    home: const StudioScreen(),
   );
 }
 
 class StudioScreen extends StatefulWidget {
-  const StudioScreen({super.key});
+  const StudioScreen({super.key, this.onDarkModeChanged});
+  final ValueChanged<bool>? onDarkModeChanged;
   @override
   State<StudioScreen> createState() => _StudioScreenState();
 }
@@ -46,18 +128,19 @@ class _StudioScreenState extends State<StudioScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   late final MurmurController controller;
   late final MicrophoneInput microphone;
-  MurmurShape shape = MurmurShape.contourBloom;
-  bool _loading = true;
+  MurmurShape shape = MurmurShape.waterSurface;
+  bool _loading = false;
   late final AnimationController _progressAnimation;
   double get _progress => _progressAnimation.value * 100;
   bool _busy = false;
+  StudioColors get c => StudioColors.of(context);
+  bool get _dark => Theme.of(context).brightness == Brightness.dark;
   String? _error;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     controller = MurmurController(vsync: this);
-    controller.suspend();
     _progressAnimation =
         AnimationController(
             vsync: this,
@@ -189,7 +272,7 @@ class _StudioScreenState extends State<StudioScreen>
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: c.surface,
       surfaceTintColor: Colors.transparent,
       toolbarHeight: 76,
       titleSpacing: 24,
@@ -198,7 +281,7 @@ class _StudioScreenState extends State<StudioScreen>
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: ink,
+              color: logoTile,
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(Icons.graphic_eq_rounded, color: mint, size: 25),
@@ -208,7 +291,7 @@ class _StudioScreenState extends State<StudioScreen>
             TextSpan(
               children: [
                 TextSpan(
-                  text: 'voice',
+                  text: 'murmur',
                   style: TextStyle(fontWeight: FontWeight.w800),
                 ),
                 TextSpan(
@@ -222,11 +305,23 @@ class _StudioScreenState extends State<StudioScreen>
         ],
       ),
       actions: [
+        IconButton(
+          tooltip: _dark ? 'Switch to light mode' : 'Switch to dark mode',
+          onPressed: widget.onDarkModeChanged == null
+              ? null
+              : () => widget.onDarkModeChanged!(!_dark),
+          icon: Icon(
+            _dark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
+            size: 20,
+          ),
+          color: c.muted,
+        ),
+        const SizedBox(width: 4),
         TextButton.icon(
           onPressed: _busy ? null : _reset,
           icon: const Icon(Icons.restart_alt, size: 18),
           label: const Text('Reset'),
-          style: TextButton.styleFrom(foregroundColor: muted),
+          style: TextButton.styleFrom(foregroundColor: c.muted),
         ),
         const SizedBox(width: 14),
       ],
@@ -275,10 +370,10 @@ class _StudioScreenState extends State<StudioScreen>
         _loading
             ? 'DETERMINATE LOADING EXPLORATIONS'
             : 'VOICE AGENT EXPLORATIONS',
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 12,
           letterSpacing: 1.6,
-          color: muted,
+          color: c.muted,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -296,14 +391,14 @@ class _StudioScreenState extends State<StudioScreen>
         _loading
             ? 'Three ways to see exactly how far you’ve come.'
             : 'Find the right feeling for your voice agent.',
-        style: const TextStyle(color: muted, fontSize: 16),
+        style: TextStyle(color: c.muted, fontSize: 16),
       ),
       const SizedBox(height: 25),
       _stage(),
       const SizedBox(height: 20),
-      const Text(
+      Text(
         'PREVIEW MODE',
-        style: TextStyle(fontSize: 12, color: muted, letterSpacing: 1),
+        style: TextStyle(fontSize: 12, color: c.muted, letterSpacing: 1),
       ),
       const SizedBox(height: 10),
       Wrap(
@@ -326,9 +421,9 @@ class _StudioScreenState extends State<StudioScreen>
       ),
       if (!_loading) ...[
         const SizedBox(height: 18),
-        const Text(
+        Text(
           'AGENT STATE',
-          style: TextStyle(fontSize: 12, color: muted, letterSpacing: 1),
+          style: TextStyle(fontSize: 12, color: c.muted, letterSpacing: 1),
         ),
         const SizedBox(height: 10),
         Wrap(
@@ -349,7 +444,7 @@ class _StudioScreenState extends State<StudioScreen>
         ),
       ],
       const SizedBox(height: 28),
-      const Divider(color: Color(0xFFE0E6E0)),
+      Divider(color: c.line),
       const SizedBox(height: 16),
       Wrap(
         alignment: WrapAlignment.spaceBetween,
@@ -362,7 +457,7 @@ class _StudioScreenState extends State<StudioScreen>
           ),
           Text(
             _loading ? '3 progress styles' : '17 ways to be heard',
-            style: const TextStyle(fontSize: 12, color: muted),
+            style: TextStyle(fontSize: 12, color: c.muted),
           ),
         ],
       ),
@@ -395,17 +490,17 @@ class _StudioScreenState extends State<StudioScreen>
         },
       ),
       const SizedBox(height: 24),
-      const Wrap(
+      Wrap(
         spacing: 30,
         runSpacing: 8,
         children: [
           Text(
             'Made for exploring. Tuned by you.',
-            style: TextStyle(fontSize: 12, color: muted),
+            style: TextStyle(fontSize: 12, color: c.muted),
           ),
           Text(
             'Audio stays on your device.',
-            style: TextStyle(fontSize: 12, color: muted),
+            style: TextStyle(fontSize: 12, color: c.muted),
           ),
         ],
       ),
@@ -418,11 +513,7 @@ class _StudioScreenState extends State<StudioScreen>
   }) {
     final s = selectedShape ?? shape;
     final style = thumbnail
-        ? controller.style.copyWith(
-            color: const Color(0xFF4E8867),
-            scale: 1,
-            glow: false,
-          )
+        ? controller.style.copyWith(color: c.thumbnail, scale: 1, glow: false)
         : controller.style;
     return _loading
         ? MurmurLoading(
@@ -483,6 +574,10 @@ class _StudioScreenState extends State<StudioScreen>
     child: Container(
       height: 390,
       color: stageColor,
+      foregroundDecoration: BoxDecoration(
+        border: Border.all(color: c.stageBorder),
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Stack(
         children: [
           Positioned.fill(
@@ -644,11 +739,11 @@ class _StudioScreenState extends State<StudioScreen>
       selected: selected,
       button: true,
       child: Material(
-        color: Colors.white,
+        color: c.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
-            color: selected ? green : const Color(0xFFDDE4DD),
+            color: selected ? c.accent : c.border,
             width: selected ? 1.5 : 1,
           ),
         ),
@@ -661,7 +756,7 @@ class _StudioScreenState extends State<StudioScreen>
             children: [
               Container(
                 height: 98,
-                color: const Color(0xFFF0F3F0),
+                color: c.well,
                 child: LayoutBuilder(
                   builder: (_, c) => Center(
                     child: _indicator(
@@ -696,7 +791,7 @@ class _StudioScreenState extends State<StudioScreen>
                                       ? 'Clockwise fill · spectrum'
                                       : 'Layered fill · bloom')
                                 : s.description,
-                            style: const TextStyle(fontSize: 12, color: muted),
+                            style: TextStyle(fontSize: 12, color: c.muted),
                           ),
                         ],
                       ),
@@ -706,7 +801,7 @@ class _StudioScreenState extends State<StudioScreen>
                           ? Icons.check_circle
                           : Icons.radio_button_unchecked,
                       size: 18,
-                      color: selected ? green : const Color(0xFFD0DAD2),
+                      color: selected ? c.accent : c.subtle,
                     ),
                   ],
                 ),
@@ -719,14 +814,14 @@ class _StudioScreenState extends State<StudioScreen>
   }
 
   Widget _controls() => Container(
-    color: Colors.white,
+    color: c.surface,
     padding: const EdgeInsets.all(25),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
-            Icon(Icons.tune, color: muted, size: 20),
+            Icon(Icons.tune, color: c.muted, size: 20),
             SizedBox(width: 9),
             Text(
               'The controls',
@@ -763,7 +858,7 @@ class _StudioScreenState extends State<StudioScreen>
                 : controller.isDemo
                 ? 'A simulated voice. No microphone needed.'
                 : 'Microphone is on. Sound is processed locally.',
-            style: const TextStyle(fontSize: 13, color: muted, height: 1.6),
+            style: TextStyle(fontSize: 13, color: c.muted, height: 1.6),
           ),
           const SizedBox(height: 17),
           ValueListenableBuilder<double>(
@@ -771,8 +866,8 @@ class _StudioScreenState extends State<StudioScreen>
             builder: (_, level, child) => Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: const Color(0xFFFAFCF9),
-                border: Border.all(color: const Color(0xFFE4E9E4)),
+                color: c.panel,
+                border: Border.all(color: c.border),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
@@ -783,7 +878,7 @@ class _StudioScreenState extends State<StudioScreen>
                       const Text('Input level', style: TextStyle(fontSize: 13)),
                       Text(
                         '${(level * 100).round()}%',
-                        style: const TextStyle(fontSize: 12, color: muted),
+                        style: TextStyle(fontSize: 12, color: c.muted),
                       ),
                     ],
                   ),
@@ -797,8 +892,8 @@ class _StudioScreenState extends State<StudioScreen>
                           margin: const EdgeInsets.symmetric(horizontal: 1.5),
                           decoration: BoxDecoration(
                             color: i < (level * 24).round()
-                                ? const Color(0xFF83B394)
-                                : const Color(0xFFE1E8E0),
+                                ? c.meterOn
+                                : c.meterOff,
                             borderRadius: BorderRadius.circular(2),
                           ),
                         ),
@@ -806,16 +901,16 @@ class _StudioScreenState extends State<StudioScreen>
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Quiet',
-                        style: TextStyle(fontSize: 12, color: muted),
+                        style: TextStyle(fontSize: 12, color: c.muted),
                       ),
                       Text(
                         'Loud',
-                        style: TextStyle(fontSize: 12, color: muted),
+                        style: TextStyle(fontSize: 12, color: c.muted),
                       ),
                     ],
                   ),
@@ -862,11 +957,7 @@ class _StudioScreenState extends State<StudioScreen>
                 liveRegion: true,
                 child: Text(
                   _error!,
-                  style: const TextStyle(
-                    color: Color(0xFFAD553D),
-                    fontSize: 13,
-                    height: 1.5,
-                  ),
+                  style: TextStyle(color: c.error, fontSize: 13, height: 1.5),
                 ),
               ),
             ),
@@ -881,7 +972,7 @@ class _StudioScreenState extends State<StudioScreen>
             const Text('Accent color', style: TextStyle(fontSize: 14)),
             Text(
               '#${controller.style.color.toARGB32().toRadixString(16).substring(2).toUpperCase()}',
-              style: const TextStyle(color: muted, fontSize: 12),
+              style: TextStyle(color: c.muted, fontSize: 12),
             ),
           ],
         ),
@@ -914,7 +1005,7 @@ class _StudioScreenState extends State<StudioScreen>
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: color == controller.style.color
-                                  ? green
+                                  ? c.accent
                                   : Colors.transparent,
                               width: 2,
                             ),
@@ -975,13 +1066,13 @@ class _StudioScreenState extends State<StudioScreen>
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFFF3F6F2),
+            color: c.tint,
             borderRadius: BorderRadius.circular(9),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.auto_awesome_outlined, size: 20, color: green),
+              Icon(Icons.auto_awesome_outlined, size: 20, color: c.accent),
               SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -1001,7 +1092,11 @@ class _StudioScreenState extends State<StudioScreen>
                       _loading
                           ? 'Scrub from 0 to 100%. All three indicators follow the same progress value.'
                           : 'Try talking, clapping, or playing music. Each shape responds in its own way.',
-                      style: TextStyle(fontSize: 13, height: 1.6, color: muted),
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.6,
+                        color: c.muted,
+                      ),
                     ),
                   ],
                 ),
@@ -1023,9 +1118,9 @@ class _StudioScreenState extends State<StudioScreen>
       100,
       _setProgress,
     ),
-    const Text(
+    Text(
       'Set an exact value, or play a sample loading sequence.',
-      style: TextStyle(fontSize: 13, color: muted, height: 1.6),
+      style: TextStyle(fontSize: 13, color: c.muted, height: 1.6),
     ),
     const SizedBox(height: 12),
     SizedBox(
@@ -1071,7 +1166,7 @@ class _StudioScreenState extends State<StudioScreen>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(title, style: const TextStyle(fontSize: 14)),
-            Text(display, style: const TextStyle(fontSize: 12, color: muted)),
+            Text(display, style: TextStyle(fontSize: 12, color: c.muted)),
           ],
         ),
         Slider(
@@ -1089,9 +1184,9 @@ class _StudioScreenState extends State<StudioScreen>
     title,
     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
   );
-  Widget _divider() => const Padding(
+  Widget _divider() => Padding(
     padding: EdgeInsets.symmetric(vertical: 24),
-    child: Divider(height: 1, color: Color(0xFFE8EDE8)),
+    child: Divider(height: 1, color: c.line),
   );
   String _title(String s) => '${s[0].toUpperCase()}${s.substring(1)}';
   Future<void> _customColor() async {
