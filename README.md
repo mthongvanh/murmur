@@ -5,6 +5,139 @@ with seventeen shapes. Every indicator is drawn in Dart
 with `CustomPainter`; no WebView, JavaScript, downloaded animations, or server
 is involved. Microphone capture uses the `record` platform plugin.
 
+## Gallery
+
+### Voice indicators
+
+Shown in the listening state, driven by the built-in demo signal.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="doc/gifs/aurora_orb.gif" width="240" alt="Aurora orb"><br>
+      <b>Aurora orb</b><br>
+      <sub>Organic · immersive</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/frequency_bars.gif" width="240" alt="Frequency bars"><br>
+      <b>Frequency bars</b><br>
+      <sub>Rhythmic · precise</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/ripple_rings.gif" width="240" alt="Ripple rings"><br>
+      <b>Ripple rings</b><br>
+      <sub>Calm · expansive</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="doc/gifs/waveform.gif" width="240" alt="Waveform"><br>
+      <b>Waveform</b><br>
+      <sub>Familiar · expressive</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/particle_cloud.gif" width="240" alt="Particle cloud"><br>
+      <b>Particle cloud</b><br>
+      <sub>Playful · ambient</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/voice_ribbon.gif" width="240" alt="Voice ribbon"><br>
+      <b>Voice ribbon</b><br>
+      <sub>Fluid · continuous</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="doc/gifs/spectrum_halo.gif" width="240" alt="Spectrum halo"><br>
+      <b>Spectrum halo</b><br>
+      <sub>Circular · detailed</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/dot_matrix.gif" width="240" alt="Dot matrix"><br>
+      <b>Dot matrix</b><br>
+      <sub>Digital · tactile</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/radial_spokes.gif" width="240" alt="Radial spokes"><br>
+      <b>Radial spokes</b><br>
+      <sub>Bold · energetic</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="doc/gifs/orbit_trails.gif" width="240" alt="Orbit trails"><br>
+      <b>Orbit trails</b><br>
+      <sub>Spatial · flowing</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/pulse_capsule.gif" width="240" alt="Pulse capsule"><br>
+      <b>Pulse capsule</b><br>
+      <sub>Minimal · focused</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/contour_bloom.gif" width="240" alt="Contour bloom"><br>
+      <b>Contour bloom</b><br>
+      <sub>Layered · organic</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="doc/gifs/water_surface.gif" width="240" alt="Water surface"><br>
+      <b>Water surface</b><br>
+      <sub>Rippling · luminous</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/folded_light.gif" width="240" alt="Folded light"><br>
+      <b>Folded light</b><br>
+      <sub>Angular · prismatic</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/gravity_well.gif" width="240" alt="Gravity well"><br>
+      <b>Gravity well</b><br>
+      <sub>Warped · magnetic</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="doc/gifs/phase_weave.gif" width="240" alt="Phase weave"><br>
+      <b>Phase weave</b><br>
+      <sub>Entangled · continuous</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/ink_eclipse.gif" width="240" alt="Ink eclipse"><br>
+      <b>Ink eclipse</b><br>
+      <sub>Negative · atmospheric</sub>
+    </td>
+  </tr>
+</table>
+
+### Determinate loading
+
+Progress eases from 0 to 100%.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="doc/gifs/loading_water_surface.gif" width="240" alt="Water surface"><br>
+      <b>Water surface</b><br>
+      <sub>Fills from center to the rim</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/loading_spectrum_halo.gif" width="240" alt="Spectrum halo"><br>
+      <b>Spectrum halo</b><br>
+      <sub>Fills clockwise from the top</sub>
+    </td>
+    <td align="center">
+      <img src="doc/gifs/loading_contour_bloom.gif" width="240" alt="Contour bloom"><br>
+      <b>Contour bloom</b><br>
+      <sub>Fills from the innermost contour out</sub>
+    </td>
+  </tr>
+</table>
+
+To regenerate these after changing an indicator, run
+`flutter test tool/render_gifs.dart` from the package root (needs ffmpeg).
+
 ## Start the studio
 
 Install **Flutter 3.44 or newer with Dart 3.12 or newer**, and put `flutter`
